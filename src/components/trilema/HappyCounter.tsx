@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { HAPPY_ATTEMPT_MILESTONES } from "../../services/mock/data";
+import { HAPPY_ATTEMPT_MILESTONES } from "@/services/mock/data.ts";
 
 interface HappyCounterProps {
   count: number;
