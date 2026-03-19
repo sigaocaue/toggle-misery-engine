@@ -46,11 +46,3 @@ export const FAIL_MESSAGES = [
   "Almeida Garret: 'Deus criou o futebol pra torcedor sofrer' 📖",
   "Seu psicólogo mandou um abraço 🫂",
 ];
-
-export const HAPPY_ATTEMPT_MILESTONES = {
-  5: "Já tentou 5 vezes ser feliz... Desiste não! 😅",
-  10: "10 tentativas! Tá igual o Santos tentando ganhar título 🏆",
-  25: "25x! Você é mais persistente que o Santos na Série B 💪",
-  50: "50 TENTATIVAS?! Procure ajuda... ou outro time 🏥",
-  100: "100 tentativas. Lenda. Monumento ao sofrimento. 🗿",
-};

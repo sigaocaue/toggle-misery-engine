@@ -30,13 +30,13 @@ export default function ToggleItem({ item, isOn, isForcedOff, forcedOffEmoji, on
         animate={
           isForcedOff
             ? {
-                x: [0, -80, 0],
-                backgroundColor: [
-                  "rgba(255,255,255,1)",
-                  "rgba(254,202,202,1)",
-                  "rgba(255,255,255,0.6)",
-                ],
-              }
+              x: [0, -80, 0],
+              backgroundColor: [
+                "rgba(255,255,255,1)",
+                "rgba(254,202,202,1)",
+                "rgba(255,255,255,0.6)",
+              ],
+            }
             : {}
         }
         transition={

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { Club } from "../../types";
+import type { Club } from "@/types";
 
 interface ClubBadgeProps {
   club: Club | null;
@@ -7,11 +7,13 @@ interface ClubBadgeProps {
 }
 
 export default function ClubBadge({ club, size = 48 }: ClubBadgeProps) {
-  if (!club) return null;
+  if (!club) {
+    return null;
+  }
 
   return (
     <motion.div
-      className="flex-shrink-0"
+      className="shrink-0"
       whileHover={{ scale: 1.15, rotate: 5 }}
       whileTap={{ scale: 0.9 }}
       transition={{ type: "spring", stiffness: 400, damping: 15 }}

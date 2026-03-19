@@ -27,7 +27,7 @@ export default function useSound() {
   }, []);
 
   const playFailSound = useCallback(() => {
-    if (!soundEnabled) return;
+    if (!soundEnabled) {return;}
     const ctx = getAudioContext();
     const now = ctx.currentTime;
 
@@ -57,7 +57,7 @@ export default function useSound() {
   }, [soundEnabled, getAudioContext]);
 
   const playClickSound = useCallback(() => {
-    if (!soundEnabled) return;
+    if (!soundEnabled) {return;}
     const ctx = getAudioContext();
     const now = ctx.currentTime;
     const osc = ctx.createOscillator();

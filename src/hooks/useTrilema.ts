@@ -47,7 +47,7 @@ export default function useTrilema() {
           setHappyAttempts((c) => c + 1);
         }
 
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        if (timeoutRef.current) {clearTimeout(timeoutRef.current);}
         timeoutRef.current = setTimeout(() => {
           setToggles((current) => ({
             ...current,
@@ -56,7 +56,7 @@ export default function useTrilema() {
           setForcedOff(victimId);
           setForcedOffEmoji(FORCED_OFF_EMOJIS[Math.floor(Math.random() * FORCED_OFF_EMOJIS.length)]);
           setShowBriefHappy(false);
-          if (onForceOff) onForceOff(victimId);
+          if (onForceOff) {onForceOff(victimId);}
 
           setTimeout(() => {
             setForcedOff(null);
