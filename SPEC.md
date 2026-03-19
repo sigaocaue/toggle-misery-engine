@@ -9,7 +9,7 @@ Existe um projeto React + Vite + TypeScript já inicializado. Implemente nele um
 ## Stack Obrigatória
 
 - **React + Vite** (projeto existente)
-- **TypeScript** (uso de `any` permitido quando necessário — não usar strict sem any)
+- **TypeScript**
 - **Tailwind CSS** para estilização
 - **Framer Motion** para animações e transições
 - **Axios** para consumo de API
