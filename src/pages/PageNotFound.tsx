@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function PageNotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-linear-to-b from-gray-100 to-gray-200 flex flex-col items-center justify-center px-4">
       <motion.div
         className="text-center"
         initial={{ opacity: 0, y: 20 }}
@@ -14,7 +14,7 @@ export default function PageNotFound() {
         <p className="text-gray-500 mb-6">
           Essa página sumiu igual gol do seu time em final.
         </p>
-        <Link to="/trilema">
+        <Link to="/">
           <motion.button
             className="rounded-full bg-gray-900 px-6 py-3 text-white font-semibold cursor-pointer"
             whileHover={{ scale: 1.05 }}
