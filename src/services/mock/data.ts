@@ -1,6 +1,8 @@
+import type { Club, ToggleItem } from "@/types";
+
 // Mock data for O Trilema do Torcedor
 
-export const SANTOS_CLUB = {
+export const SANTOS_CLUB: Club = {
   id: "santos-fc",
   name: "Santos Futebol Clube",
   shortName: "Santos",
@@ -11,7 +13,7 @@ export const SANTOS_CLUB = {
   },
 };
 
-export const TOGGLE_ITEMS = [
+export const TOGGLE_ITEMS: ToggleItem[] = [
   {
     id: "A",
     label: "torcer para o",

@@ -1,9 +1,10 @@
 import { TOGGLE_ITEMS, SANTOS_CLUB } from "./mock/data";
+import type { Club, ToggleItem } from "@/types";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const api = {
-  async getClub() {
+  async getClub(): Promise<Club> {
     await delay(800 + Math.random() * 700);
     if (Math.random() < 0.05) {
       throw new Error("O VAR deu problema! Tente novamente.");
@@ -11,7 +12,7 @@ export const api = {
     return SANTOS_CLUB;
   },
 
-  async getToggles() {
+  async getToggles(): Promise<ToggleItem[]> {
     await delay(1000 + Math.random() * 500);
     if (Math.random() < 0.05) {
       throw new Error("O árbitro expulsou a API! Tente novamente.");
