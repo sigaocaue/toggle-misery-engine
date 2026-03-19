@@ -1,51 +1,33 @@
 import { useState, useEffect } from "react";
-import type { TrilemaData } from "../types";
-import { fetchTrilemaData } from "../services/api";
+import { api } from "../services/api";
+import type { Club } from "../types";
 
-export function useClubData() {
-  const [data, setData] = useState<TrilemaData | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function useClubData() {
+  const [toggleItems, setToggleItems] = useState<any[] | null>(null);
+  const [club, setClub] = useState<Club | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      try {
-        setLoading(true);
-        setError(null);
-        const result = await fetchTrilemaData();
-        if (!cancelled) {
-          setData(result);
-        }
-      } catch {
-        if (!cancelled) {
-          setError("Ih, a API deu ruim... Igual o time em dia de clássico!");
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const retry = () => {
-    setData(null);
-    setLoading(true);
+  const fetchData = async () => {
+    setIsLoading(true);
     setError(null);
-    fetchTrilemaData()
-      .then(setData)
-      .catch(() =>
-        setError("Ih, a API deu ruim... Igual o time em dia de clássico!")
-      )
-      .finally(() => setLoading(false));
+    try {
+      const [toggleData, clubData] = await Promise.all([
+        api.getToggles(),
+        api.getClub(),
+      ]);
+      setToggleItems(toggleData);
+      setClub(clubData);
+    } catch (err: any) {
+      setError(err.message || "Erro ao carregar dados");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  return { data, loading, error, retry };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return { toggleItems, club, isLoading, error, refetch: fetchData };
 }

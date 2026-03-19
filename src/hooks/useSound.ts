@@ -1,61 +1,82 @@
 import { useState, useCallback, useRef } from "react";
 
-const SOUNDS = [
-  { frequency: 200, duration: 0.3, type: "sawtooth" as OscillatorType },
-  { frequency: 150, duration: 0.4, type: "square" as OscillatorType },
-  { frequency: 180, duration: 0.35, type: "triangle" as OscillatorType },
-];
+const createAudioContext = () => {
+  return new AudioContext();
+};
 
-function playSadSound(audioCtx: AudioContext) {
-  const sound = SOUNDS[Math.floor(Math.random() * SOUNDS.length)];
-
-  const oscillator = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
-
-  oscillator.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-
-  oscillator.type = sound.type;
-  oscillator.frequency.setValueAtTime(sound.frequency, audioCtx.currentTime);
-  oscillator.frequency.exponentialRampToValueAtTime(
-    80,
-    audioCtx.currentTime + sound.duration
-  );
-
-  gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(
-    0.01,
-    audioCtx.currentTime + sound.duration
-  );
-
-  oscillator.start(audioCtx.currentTime);
-  oscillator.stop(audioCtx.currentTime + sound.duration);
-}
-
-export function useSound() {
-  const [soundEnabled, setSoundEnabled] = useState(true);
+export default function useSound() {
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    const saved = sessionStorage.getItem("trilema-sound");
+    return saved !== null ? saved === "true" : true;
+  });
   const audioCtxRef = useRef<AudioContext | null>(null);
 
   const getAudioContext = useCallback(() => {
     if (!audioCtxRef.current) {
-      audioCtxRef.current = new AudioContext();
+      audioCtxRef.current = createAudioContext();
     }
     return audioCtxRef.current;
   }, []);
 
-  const playFailSound = useCallback(() => {
-    if (!soundEnabled) return;
-    try {
-      const ctx = getAudioContext();
-      playSadSound(ctx);
-    } catch {
-      // Audio not supported, silently ignore
-    }
-  }, [soundEnabled, getAudioContext]);
-
   const toggleSound = useCallback(() => {
-    setSoundEnabled((prev) => !prev);
+    setSoundEnabled((prev) => {
+      const next = !prev;
+      sessionStorage.setItem("trilema-sound", String(next));
+      return next;
+    });
   }, []);
 
-  return { soundEnabled, toggleSound, playFailSound };
+  const playFailSound = useCallback(() => {
+    if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+
+    const notes = [
+      { freq: 392, start: 0, dur: 0.25 },
+      { freq: 370, start: 0.25, dur: 0.25 },
+      { freq: 349, start: 0.5, dur: 0.25 },
+      { freq: 311, start: 0.75, dur: 0.6 },
+    ];
+
+    notes.forEach(({ freq, start, dur }) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(freq, now + start);
+      if (start === 0.75) {
+        osc.frequency.setValueAtTime(freq, now + start);
+        osc.frequency.linearRampToValueAtTime(freq - 20, now + start + dur);
+      }
+      gain.gain.setValueAtTime(0.3, now + start);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + start + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + start);
+      osc.stop(now + start + dur + 0.05);
+    });
+  }, [soundEnabled, getAudioContext]);
+
+  const playClickSound = useCallback(() => {
+    if (!soundEnabled) return;
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(800, now);
+    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }, [soundEnabled, getAudioContext]);
+
+  return {
+    soundEnabled,
+    toggleSound,
+    playFailSound,
+    playClickSound,
+  };
 }

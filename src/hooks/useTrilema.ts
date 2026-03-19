@@ -1,61 +1,75 @@
 import { useState, useCallback, useRef } from "react";
 import type { ToggleId, ToggleState } from "../types";
 
-// Rules: when turning on the third toggle, one must be forced OFF
-// Ligar C quando A+B ON → B OFF
-// Ligar B quando A+C ON → A OFF
-// Ligar A quando B+C ON → C OFF
-const FORCE_OFF_MAP: Record<ToggleId, { requires: [ToggleId, ToggleId]; victim: ToggleId }> = {
-  C: { requires: ["A", "B"], victim: "B" },
-  B: { requires: ["A", "C"], victim: "A" },
-  A: { requires: ["B", "C"], victim: "C" },
+const FORCE_OFF_MAP: Record<ToggleId, ToggleId> = {
+  C: "B",
+  B: "A",
+  A: "C",
 };
 
-export function useTrilema() {
-  const [toggles, setToggles] = useState<ToggleState>({
-    A: false,
-    B: false,
-    C: false,
-  });
-
+export default function useTrilema() {
+  const [toggles, setToggles] = useState<ToggleState>({ A: false, B: false, C: false });
   const [forcedOff, setForcedOff] = useState<ToggleId | null>(null);
-  const [miseryCount, setMiseryCount] = useState(0);
-  const onForceOffRef = useRef<(() => void) | null>(null);
+  const [happyAttempts, setHappyAttempts] = useState(0);
+  const [lastMessage, setLastMessage] = useState<string | null>(null);
+  const [showBriefHappy, setShowBriefHappy] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const setOnForceOff = useCallback((cb: () => void) => {
-    onForceOffRef.current = cb;
-  }, []);
+  const handleToggle = useCallback(
+    (id: ToggleId, onForceOff?: (victimId: ToggleId) => void) => {
+      setToggles((prev) => {
+        const newState = { ...prev };
 
-  const toggle = useCallback((id: ToggleId) => {
-    setToggles((prev) => {
-      const newValue = !prev[id];
-
-      if (!newValue) {
-        // Turning OFF manually — just do it
-        return { ...prev, [id]: false };
-      }
-
-      // Turning ON — check trilema
-      const rule = FORCE_OFF_MAP[id];
-      const [req1, req2] = rule.requires;
-
-      if (prev[req1] && prev[req2]) {
-        // All three would be ON — force one OFF
-        setForcedOff(rule.victim);
-        if (id === "C" || rule.victim === "C") {
-          setMiseryCount((c) => c + 1);
+        if (prev[id]) {
+          newState[id] = false;
+          setForcedOff(null);
+          setLastMessage(null);
+          return newState;
         }
-        onForceOffRef.current?.();
 
-        // Clear forcedOff after animation
-        setTimeout(() => setForcedOff(null), 600);
+        newState[id] = true;
 
-        return { ...prev, [id]: true, [rule.victim]: false };
-      }
+        const onCount = Object.values(newState).filter(Boolean).length;
 
-      return { ...prev, [id]: true };
-    });
-  }, []);
+        if (onCount <= 2) {
+          setForcedOff(null);
+          return newState;
+        }
 
-  return { toggles, toggle, forcedOff, miseryCount, setOnForceOff };
+        const victimId = FORCE_OFF_MAP[id];
+
+        setShowBriefHappy(true);
+
+        if (id === "C") {
+          setHappyAttempts((c) => c + 1);
+        }
+
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+          setToggles((current) => ({
+            ...current,
+            [victimId]: false,
+          }));
+          setForcedOff(victimId);
+          setShowBriefHappy(false);
+          if (onForceOff) onForceOff(victimId);
+
+          setTimeout(() => setForcedOff(null), 1500);
+        }, 150);
+
+        return newState;
+      });
+    },
+    []
+  );
+
+  return {
+    toggles,
+    handleToggle,
+    forcedOff,
+    happyAttempts,
+    lastMessage,
+    setLastMessage,
+    showBriefHappy,
+  };
 }
