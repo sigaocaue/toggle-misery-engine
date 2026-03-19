@@ -17,6 +17,9 @@ export default defineConfig([
     ],
     rules: {
       '@typescript-eslint/no-unused-vars': 'warn',
+      indent: ['error', 2, { SwitchCase: 1 }],
+      curly: ['warn', 'all'],
+      'object-curly-spacing': ['error', 'always'],
     },
     languageOptions: {
       ecmaVersion: 2020,
