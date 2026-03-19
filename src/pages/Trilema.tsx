@@ -19,6 +19,7 @@ export function Trilema() {
     toggles,
     handleToggle,
     forcedOff,
+    forcedOffEmoji,
     lastMessage,
     setLastMessage,
     showBriefHappy,
@@ -74,6 +75,7 @@ export function Trilema() {
               toggleItems={toggleItems}
               toggles={toggles}
               forcedOff={forcedOff}
+              forcedOffEmoji={forcedOffEmoji}
               onToggle={onToggle}
               lastMessage={lastMessage}
             />

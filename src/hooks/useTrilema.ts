@@ -1,6 +1,8 @@
 import { useState, useCallback, useRef } from "react";
 import type { ToggleId, ToggleState } from "@/types";
 
+const FORCED_OFF_EMOJIS = ["💀", "😭", "🤡", "😱", "🫠", "😵", "🥲"];
+
 const FORCE_OFF_MAP: Record<ToggleId, ToggleId> = {
   C: "B",
   B: "A",
@@ -10,6 +12,7 @@ const FORCE_OFF_MAP: Record<ToggleId, ToggleId> = {
 export default function useTrilema() {
   const [toggles, setToggles] = useState<ToggleState>({ A: false, B: false, C: false });
   const [forcedOff, setForcedOff] = useState<ToggleId | null>(null);
+  const [forcedOffEmoji, setForcedOffEmoji] = useState<string | null>(null);
   const [happyAttempts, setHappyAttempts] = useState(0);
   const [lastMessage, setLastMessage] = useState<string | null>(null);
   const [showBriefHappy, setShowBriefHappy] = useState(false);
@@ -51,10 +54,14 @@ export default function useTrilema() {
             [victimId]: false,
           }));
           setForcedOff(victimId);
+          setForcedOffEmoji(FORCED_OFF_EMOJIS[Math.floor(Math.random() * FORCED_OFF_EMOJIS.length)]);
           setShowBriefHappy(false);
           if (onForceOff) onForceOff(victimId);
 
-          setTimeout(() => setForcedOff(null), 1500);
+          setTimeout(() => {
+            setForcedOff(null);
+            setForcedOffEmoji(null);
+          }, 1500);
         }, 150);
 
         return newState;
@@ -67,6 +74,7 @@ export default function useTrilema() {
     toggles,
     handleToggle,
     forcedOff,
+    forcedOffEmoji,
     happyAttempts,
     lastMessage,
     setLastMessage,

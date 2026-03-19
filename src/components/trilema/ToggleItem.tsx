@@ -3,18 +3,15 @@ import ToggleSwitch from "./ToggleSwitch";
 import ClubBadge from "./ClubBadge";
 import type { ToggleItem as ToggleItemType } from "../../types";
 
-const FORCED_OFF_EMOJIS = ["💀", "😭", "🤡", "😱", "🫠", "😵", "🥲"];
-
 interface ToggleItemProps {
   item: ToggleItemType;
   isOn: boolean;
   isForcedOff: boolean;
+  forcedOffEmoji: string | null;
   onToggle: () => void;
 }
 
-export default function ToggleItem({ item, isOn, isForcedOff, onToggle }: ToggleItemProps) {
-  const randomEmoji =
-    FORCED_OFF_EMOJIS[Math.floor(Math.random() * FORCED_OFF_EMOJIS.length)];
+export default function ToggleItem({ item, isOn, isForcedOff, forcedOffEmoji, onToggle }: ToggleItemProps) {
 
   return (
     <motion.div
@@ -86,7 +83,7 @@ export default function ToggleItem({ item, isOn, isForcedOff, onToggle }: Toggle
               exit={{ opacity: 0, scale: 0, y: -30 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
             >
-              {randomEmoji}
+              {forcedOffEmoji}
             </motion.div>
           )}
         </AnimatePresence>

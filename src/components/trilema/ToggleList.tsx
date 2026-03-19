@@ -7,6 +7,7 @@ interface ToggleListProps {
   toggleItems: ToggleItemType[];
   toggles: ToggleState;
   forcedOff: ToggleId | null;
+  forcedOffEmoji: string | null;
   onToggle: (id: ToggleId) => void;
   lastMessage: string | null;
 }
@@ -15,6 +16,7 @@ export default function ToggleList({
   toggleItems,
   toggles,
   forcedOff,
+  forcedOffEmoji,
   onToggle,
   lastMessage,
 }: ToggleListProps) {
@@ -31,6 +33,7 @@ export default function ToggleList({
             item={item}
             isOn={toggles[item.id]}
             isForcedOff={forcedOff === item.id}
+            forcedOffEmoji={forcedOff === item.id ? forcedOffEmoji : null}
             onToggle={() => onToggle(item.id)}
           />
         </motion.div>
