@@ -1,18 +1,21 @@
-import axios from "axios";
-import type { TrilemaData } from "../types";
-import { mockTrilemaData } from "./mock/data";
+import { TOGGLE_ITEMS, SANTOS_CLUB } from "./mock/data";
 
-const api = axios.create({
-  baseURL: "/api",
-  timeout: 5000,
-});
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export async function fetchTrilemaData(): Promise<TrilemaData> {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 800));
+export const api = {
+  async getClub() {
+    await delay(800 + Math.random() * 700);
+    if (Math.random() < 0.05) {
+      throw new Error("O VAR deu problema! Tente novamente.");
+    }
+    return SANTOS_CLUB;
+  },
 
-  // In the future, replace with: const { data } = await api.get<TrilemaData>("/trilema");
-  // For now, return mock data
-  void api; // reference to avoid unused warning
-  return mockTrilemaData;
-}
+  async getToggles() {
+    await delay(1000 + Math.random() * 500);
+    if (Math.random() < 0.05) {
+      throw new Error("O árbitro expulsou a API! Tente novamente.");
+    }
+    return TOGGLE_ITEMS;
+  },
+};
