@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Trilema from './pages/Home';
-import PageNotFound from './pages/PageNotFound';
+import { Trilema } from '@/pages/Trilema';
+import { PageNotFound } from '@/pages/PageNotFound';
 
 function App() {
   return (

@@ -4,7 +4,6 @@ import Header from "../components/trilema/Header";
 import Footer from "../components/trilema/Footer";
 import ToggleList from "../components/trilema/ToggleList";
 import SoundToggle from "../components/trilema/SoundToggle";
-import HappyCounter from "../components/trilema/HappyCounter";
 import BriefHappyFlash from "../components/trilema/BriefHappyFlash";
 import LoadingSkeleton from "../components/trilema/LoadingSkeleton";
 import ErrorState from "../components/trilema/ErrorState";
@@ -14,13 +13,12 @@ import useSound from "../hooks/useSound";
 import { FAIL_MESSAGES } from "../services/mock/data";
 import type { ToggleId } from "@/types";
 
-export default function Trilema() {
+export function Trilema() {
   const { toggleItems, isLoading, error, refetch } = useClubData();
   const {
     toggles,
     handleToggle,
     forcedOff,
-    happyAttempts,
     lastMessage,
     setLastMessage,
     showBriefHappy,
@@ -79,7 +77,6 @@ export default function Trilema() {
               onToggle={onToggle}
               lastMessage={lastMessage}
             />
-            <HappyCounter count={happyAttempts} />
           </motion.div>
         )}
 

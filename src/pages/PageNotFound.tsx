@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-export default function PageNotFound() {
+export function PageNotFound() {
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-100 to-gray-200 flex flex-col items-center justify-center px-4">
       <motion.div
