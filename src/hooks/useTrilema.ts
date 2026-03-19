@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from "react";
-import type { ToggleId, ToggleState } from "../types";
+import type { ToggleId, ToggleState } from "@/types";
 
 const FORCE_OFF_MAP: Record<ToggleId, ToggleId> = {
   C: "B",

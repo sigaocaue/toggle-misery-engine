@@ -12,7 +12,7 @@ import useClubData from "../hooks/useClubData";
 import useTrilema from "../hooks/useTrilema";
 import useSound from "../hooks/useSound";
 import { FAIL_MESSAGES } from "../services/mock/data";
-import type { ToggleId } from "../types";
+import type { ToggleId } from "@/types";
 
 export default function Trilema() {
   const { toggleItems, isLoading, error, refetch } = useClubData();
