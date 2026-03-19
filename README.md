@@ -1,73 +1,60 @@
-# React + TypeScript + Vite
+# O Trilema do Torcedor ⚽
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Site humorístico que prova, de forma interativa, que a vida do torcedor brasileiro é impossível.
 
-Currently, two official plugins are available:
+Três toggles. Uma verdade dolorosa: **você não pode torcer, assistir e ser feliz ao mesmo tempo.**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Como funciona
 
-## React Compiler
+O site apresenta três toggles interdependentes:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Toggle | Label |
+|--------|-------|
+| A | Torcer para o clube |
+| B | Assistir o clube |
+| C | Ser feliz! |
 
-## Expanding the ESLint configuration
+Sempre que o usuário tenta ligar os três ao mesmo tempo, um deles é **forçado para OFF** automaticamente — com animação dramática e som engraçado. É o trilema do torcedor: escolha dois, nunca três.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Regras de interdependência
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Ação | Condição | Resultado |
+|------|----------|-----------|
+| Ligar C (Ser Feliz) | A e B já estão ON | C liga, B é forçado OFF |
+| Ligar B (Assistir) | A e C já estão ON | B liga, A é forçado OFF |
+| Ligar A (Torcer) | B e C já estão ON | A liga, C é forçado OFF |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Toggles animados** com Framer Motion — slide para a esquerda quando forçado OFF
+- **Sons engraçados** no momento do "force off" (com botão global para mutar)
+- **Dados de clubes via API** (mock local por enquanto)
+- **Mobile-first** e responsivo
+- **Micro-interações** em todos os elementos interativos
+- **Tom visual** vibrante e engraçado — feito para compartilhar com os amigos
+
+## Stack
+
+- **React 19** + **Vite 8**
+- **TypeScript**
+- **Tailwind CSS 4**
+- **Framer Motion**
+- **React Router DOM**
+- **Axios** (consumo de API)
+
+## Estrutura do projeto
+
+```
+src/
+  components/       # Componentes de UI reutilizáveis
+  hooks/            # Custom hooks (useTrilema, useClubData, useSound)
+  pages/            # Páginas da aplicação
+  services/         # Instância Axios + mock da API
+  types/            # Interfaces TypeScript
+  assets/           # Assets estáticos (sons, imagens)
+  lib/              # Utilitários
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Licença
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Projeto pessoal — feito por diversão e pela dor de ser torcedor.
